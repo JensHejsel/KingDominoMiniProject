@@ -10,7 +10,6 @@ pixelImage = np.array([[0,0,0,0,0,0,0],
                        [0,0,0,0,0,0,0],
                        [0,0,0,0,0,0,0],
                        [0,0,0,0,0,0,0]])
-oceanLow = (110,78,4)
 ocean = 1
 desert = 2
 field = 3
@@ -69,41 +68,57 @@ def defineSlices():
     return pixelImage
 
 pixelImage = defineSlices()
+adjacentTiles = []
 
 def checkForConnectivity(tileType):
-    indexY = -1
-    indexX = -1
-    burnQueue = deque()
+    yValue = 0
+    xValue = 0
+    burnQueue = []
 
-
-    for y in slices:
-        indexY += 1
-        if indexY == 5:
-            indexY = 0
-        for x in y:
-            indexX += 1
-            if indexX == 5:
-                indexX = 0
-            if pixelImage[indexY][indexX] == tileType:
-                pixelImage[indexY][indexX] = 0
-                currentPos = [[indexY],[indexX]]
-                burnQueue.append(currentPos)
-
+    for row in slices:
+        yValue += 1
+        if yValue == 6:
+            yValue = 1
+        for column in row:
+            xValue += 1
+            if xValue == 6:
+                xValue = 1
+            if pixelImage[yValue][xValue] == tileType and pixelImage[yValue][xValue] not in adjacentTiles:
+                currentPos = [[yValue,xValue]]
+                adjacentPixel = []
+                adjacentTiles.append([yValue,xValue])
+                burnQueue.append([yValue,xValue])
                 while len(burnQueue) > 0:
-                    currentPos = burnQueue.pop()
-                    if pixelImage[indexY][indexX+1] == tileType:
-                        pixelImage[indexY][indexX+1] = 0
-                        burnQueue.append(pixelImage[indexY][indexX+1])
-                    if pixelImage[indexY+1][indexX] == tileType:
-                        pixelImage[indexY+1][indexX] = 0
-                        burnQueue.append(pixelImage[indexY+1][indexX])
-                    if pixelImage[indexY][indexX-1] == tileType:
-                        pixelImage[indexY][indexX-1] = 0
-                        burnQueue.append(pixelImage[indexY][indexX-1])
-                    if pixelImage[indexY-1][indexX] == tileType:
-                        pixelImage[indexY-1][indexX] = 0
-                        burnQueue.append(pixelImage[indexY][indexX])
+                    print("thisinBQ"+str(burnQueue))
+                    print("thisinAT"+str(adjacentTiles))
+                    currentPos = [burnQueue.pop()]
+                    if pixelImage[yValue][xValue]+1 == tileType and adjacentPixel not in adjacentTiles:
+                        print("Igethere")
+                        adjacentPixel = currentPos
+                        adjacentPixel[0][1] = adjacentPixel[0][1]+1
+                        adjacentTiles.append(adjacentPixel)
+                        burnQueue.append(adjacentPixel)
 
+                    if pixelImage[yValue][xValue] == tileType:
+                        print("igethere")
+                        adjacentPixel = currentPos
+                        adjacentPixel[0][0] = adjacentPixel[0][0]+1
+                        adjacentTiles.append(adjacentPixel[0].copy())
+                        burnQueue.append(adjacentPixel[0])
+
+                    if pixelImage[currentPos[0][0]][currentPos[0][1]-1] == tileType and adjacentPixel not in adjacentTiles:
+                        adjacentPixel = currentPos
+                        adjacentPixel[0][1] = adjacentPixel[0][1]-1
+                        adjacentTiles.append(adjacentPixel)
+                        burnQueue.append(adjacentPixel)
+
+                    if pixelImage[currentPos[0][0]-1][currentPos[0][1]] == tileType and adjacentPixel not in adjacentTiles:
+                        adjacentPixel = currentPos
+                        adjacentPixel[0][0] = adjacentPixel[0][0]-1
+                        adjacentTiles.append(adjacentPixel)
+                        burnQueue.append(adjacentPixel)
+
+    print("These are the coordinates for adjacent tiles"+str(adjacentTiles))
     return pixelImage
 
 
@@ -111,7 +126,6 @@ def checkForConnectivity(tileType):
 
 wig = checkForConnectivity(1)
 meanRGB = findMeanBGR(slices[3][3])
-print(meanRGB)
 cv.imshow("slice", slices[0][2])
 cv.waitKey(0)
 
