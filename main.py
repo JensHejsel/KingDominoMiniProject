@@ -74,7 +74,7 @@ def checkForConnectivity(tileType):
     yValue = 0
     xValue = 0
     burnQueue = []
-
+    adjacentTiles.clear()
     for row in slices:
         yValue += 1
         if yValue == 6:
@@ -83,49 +83,52 @@ def checkForConnectivity(tileType):
             xValue += 1
             if xValue == 6:
                 xValue = 1
-            if pixelImage[yValue][xValue] == tileType and pixelImage[yValue][xValue] not in adjacentTiles:
+            if pixelImage[yValue][xValue] == tileType:
                 currentPos = [[yValue,xValue]]
                 adjacentPixel = []
                 adjacentTiles.append([yValue,xValue])
                 burnQueue.append([yValue,xValue])
-                while len(burnQueue) > 0:
-                    print("thisinBQ"+str(burnQueue))
-                    print("thisinAT"+str(adjacentTiles))
+                while burnQueue:
                     currentPos = [burnQueue.pop()]
-                    if pixelImage[yValue][xValue]+1 == tileType and adjacentPixel not in adjacentTiles:
-                        print("Igethere")
-                        adjacentPixel = currentPos
-                        adjacentPixel[0][1] = adjacentPixel[0][1]+1
-                        adjacentTiles.append(adjacentPixel)
-                        burnQueue.append(adjacentPixel)
+                    rightPixel = pixelImage[yValue][xValue + 1]
+                    belowPixel = pixelImage[yValue + 1][xValue]
+                    leftPixel = pixelImage[yValue][xValue - 1]
+                    abovePixel = pixelImage[yValue - 1][xValue]
+                    if rightPixel == tileType and adjacentPixel not in adjacentTiles:
+                        hitCord = [yValue, xValue+1]
+                        burnQueue.append(hitCord)
+                        adjacentTiles.append(hitCord)
 
-                    if pixelImage[yValue][xValue] == tileType:
-                        print("igethere")
-                        adjacentPixel = currentPos
-                        adjacentPixel[0][0] = adjacentPixel[0][0]+1
-                        adjacentTiles.append(adjacentPixel[0].copy())
-                        burnQueue.append(adjacentPixel[0])
+                    if belowPixel == tileType and adjacentPixel not in adjacentTiles:
+                        currentPos[0][0] +=1
+                        print(currentPos[0][0])
+                        hitCord = currentPos
+                        print(hitCord)
+                        burnQueue.append(hitCord)
+                        adjacentTiles.append(hitCord)
 
-                    if pixelImage[currentPos[0][0]][currentPos[0][1]-1] == tileType and adjacentPixel not in adjacentTiles:
-                        adjacentPixel = currentPos
-                        adjacentPixel[0][1] = adjacentPixel[0][1]-1
-                        adjacentTiles.append(adjacentPixel)
-                        burnQueue.append(adjacentPixel)
+                    if leftPixel == tileType and adjacentPixel not in adjacentTiles:
+                        hitCord = [yValue, xValue-1]
+                        burnQueue.append(hitCord)
+                        adjacentTiles.append(hitCord)
 
-                    if pixelImage[currentPos[0][0]-1][currentPos[0][1]] == tileType and adjacentPixel not in adjacentTiles:
-                        adjacentPixel = currentPos
-                        adjacentPixel[0][0] = adjacentPixel[0][0]-1
-                        adjacentTiles.append(adjacentPixel)
-                        burnQueue.append(adjacentPixel)
+                    if abovePixel == tileType and adjacentPixel not in adjacentTiles:
+                        hitCord = [yValue-1, xValue]
+                        burnQueue.append(hitCord)
+                        adjacentTiles.append(hitCord)
 
-    print("These are the coordinates for adjacent tiles"+str(adjacentTiles))
+    print("Adjacent tiles for value "+str(tileType)+" are at the coordinates:"+str(adjacentTiles))
     return pixelImage
 
 
 
+adjacentOceanTiles = checkForConnectivity(1)
+adjacentDesertTiles = checkForConnectivity(2)
+adjacentFieldTiles = checkForConnectivity(3)
+adjacentForestTiles = checkForConnectivity(4)
+adjacentStoneTiles = checkForConnectivity(5)
+adjacentWastelandTiles = checkForConnectivity(6)
 
-wig = checkForConnectivity(1)
-meanRGB = findMeanBGR(slices[3][3])
-cv.imshow("slice", slices[0][2])
+cv.imshow("slice", inputImage)
 cv.waitKey(0)
 
