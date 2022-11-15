@@ -2,20 +2,21 @@ from collections import deque
 import numpy as np
 import cv2 as cv
 
-img = cv.imread("shapes.png", cv.IMREAD_GRAYSCALE)
+#img = cv.imread("shapes.png", cv.IMREAD_GRAYSCALE)
 
 
-'''img = np.array([[0, 0, 0, 255, 255, 255],
+img = np.array([[0, 0, 0, 255, 255, 255],
                [0, 0, 0, 0, 255, 0],
                [0, 0, 0, 0, 255, 0],
                [0, 0, 255, 255, 0, 0],
                [0, 0, 255, 255, 0, 0],
-               [0, 0, 255, 255, 0, 0]], dtype=np.uint8)'''
+               [0, 0, 255, 255, 0, 0]], dtype=np.uint8)
 
 
 def ignite_pixel(image, coordinate, id):
     y, x = coordinate
     burn_queue = deque()
+    count = 0
 
     if image[y, x] == 255:
         burn_queue.append((y, x))
@@ -25,6 +26,7 @@ def ignite_pixel(image, coordinate, id):
         y, x = current_coordinate
         if image[y, x] == 255:
             image[y, x] = id
+            count+=1
 
             if x + 1 < image.shape[1] and image[y, x + 1] == 255:
                 burn_queue.append((y, x + 1))
@@ -34,14 +36,13 @@ def ignite_pixel(image, coordinate, id):
                 burn_queue.append((y, x - 1))
             if y - 1 >= 0 and image[y - 1, x] == 255:
                 burn_queue.append((y - 1, x))
-
         #print(image)
         #print(burn_queue)
         #input()
 
         if len(burn_queue) == 0:
+            print(count)
             return id + 50
-
     return id
 
 
