@@ -129,6 +129,8 @@ def grassfire(image, tileType):
 slices = sliceImage(inputImage)
 definedSlices = defineSlices(slices)
 connectivityCount = grassfire(pixelImage, 1)
+BGRMean = findMeanBGR(slices[2][0])
+print(BGRMean)
 
 cv.imshow("slice", inputImage)
 cv.waitKey(0)
