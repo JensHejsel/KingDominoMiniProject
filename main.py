@@ -177,13 +177,12 @@ def checkForConnectivity(tileTypeImage, crownImage, tileType):
                     Koordinaterne af de enkelte tiles er givet ved elementerne i "hitCoordinates" dequet.
                     Vi skal nu bruges koordinaterne i "hitCoordinates" til at finde ud af hvor mange kroner der er i denne blob.
                     """
-                    for coord in hitCoordinates:
-                        if crownImage[coord] == 1:
+                    for coordinate in hitCoordinates:
+                        if crownImage[coordinate] == 1:
                             crownCount+=1
-                        elif crownImage[coord] == 2:
+                        elif crownImage[coordinate] == 2:
                             crownCount+=2
-                    currentBlobScore = tileCount*crownCount
-                    score += currentBlobScore
+                    score += tileCount*crownCount
                     return score
                     hitCoordinates.clear()
 
