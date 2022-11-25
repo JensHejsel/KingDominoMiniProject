@@ -14,8 +14,7 @@ The crowns are found by template matching, and the properties are found with thr
 - Niko Bach Jensen  nbfj2@student.aau.dk  20214224
 
 ## Instructions provided for the miniproject
-"King Domino er et brætspil, hvor spillerne bygger små kongeriger af farvede dominobrikker. Vinderen er den, som har flest point når spillet er slut, og pointene afhænger af, hvordan spillerens farvede dominobrikker ligger. I dette miniprojekt skal I udvikle et system, der beregner hvor mange point en given opsætning giver, baseret på et billede af spilleområdet."
-
+- Make a program that can calculate the final score for the boardgame King Domino.
 - The mini project is to be worked on in groups of two.
 - There will be provided pictures of game boards. The provided dataset can be found in the folder "King Domino datasæt".
 - Deadline for hand in: 27/11 2021 kl. 10.00
