@@ -3,6 +3,7 @@ Image Processing miniproject for MED3 at AAU
 
 ### Disclaimer:
 The program is not perfect and will often find crowns that are not present in the picture, or not find a crown at all. For this reason the scores provided are, sadly, often not accurate. Even if the score is accurate, the found crowns might not be, and vice versa.
+Another problem is that the thresholds used, to figure out what tiles are where, are not precise enough, and therefore the program will sometimes recognise the wrong tiles.
 
 ## Introduction
 The program will take a random provided image, of a finished King Domino game boards, then using image processing it will try to give a score.
