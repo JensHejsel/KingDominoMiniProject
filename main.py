@@ -5,8 +5,8 @@ import math
 from random import *
 
 RImg = randint(1, 74) #Vælg et tilfældigt tal mellem 1 og 74, som bruges til at vælge et billede fra folderen "cropped and perspective corrected".
-InputImg = cv2.imread(f"./Cropped and perspective corrected boards/4.jpg") #Hent det valgte billede og sæt det som en variabel, så det er nemmere at få det frem.
-print(f"Selected board to give score to number 4") #Fortæl hvilket billede er valgt i console.
+InputImg = cv2.imread(f"./Cropped and perspective corrected boards/{RImg}.jpg") #Hent det valgte billede og sæt det som en variabel, så det er nemmere at få det frem.
+print(f"Selected board to give score to number {RImg}") #Fortæl hvilket billede er valgt i console.
 cv2.imshow("Chosen Board", InputImg) #Vis det valgte billede i et vindue.
 
 def sliceInputImg(InputImg): #Funktion som skærer billedet op i 25 brikker.
